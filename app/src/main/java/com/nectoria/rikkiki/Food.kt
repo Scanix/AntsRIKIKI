@@ -3,6 +3,7 @@ package com.nectoria.rikkiki
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.RectF
 import android.util.Log
 import java.util.*
 
@@ -32,13 +33,17 @@ class Food : Cell {
     override fun render(canvas: Canvas) {
         val paint = Paint()
         paint.alpha = 255
-        paint.setARGB(255,69, 62, 1)
+        paint.setARGB(255, 69, 62, 1)
 
         paint.strokeWidth = 3f
 
-        canvas.drawRect(
-            (this.position.x * this.size.x).toFloat(), (this.position.y * this.size.y).toFloat(), (this.position.x * this.size.x + this.size.x).toFloat(),
-            (this.position.y * this.size.y + this.size.y).toFloat(), paint
+        canvas.drawOval(
+            RectF(
+                (this.position.x * this.size.x).toFloat(),
+                (this.position.y * this.size.y).toFloat(),
+                (this.position.x * this.size.x + this.size.x).toFloat(),
+                (this.position.y * this.size.y + this.size.y).toFloat(),
+            ), paint
         )
     }
 

@@ -6,14 +6,14 @@ import android.view.SurfaceHolder
 import android.view.SurfaceView
 
 import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
 
 
 class GameViewAnts(context: Context, attributes: AttributeSet) : SurfaceView(context, attributes),
     SurfaceHolder.Callback {
     private val thread: GameThreadAnts
     private lateinit var world: World
+    private var lastIsFaceDetected = false
+    private var delaySpawnKill = 0
 
 
     init {
@@ -25,6 +25,7 @@ class GameViewAnts(context: Context, attributes: AttributeSet) : SurfaceView(con
         val rowWidth = this.width / 100
         val rowHeight = this.height / 100
         world = createWorld(rowWidth, rowHeight)
+
         thread.setRunning(true)
         thread.start()
     }
@@ -52,6 +53,23 @@ class GameViewAnts(context: Context, attributes: AttributeSet) : SurfaceView(con
      * Function to update the positions of player and game objects
      */
     fun update() {
+        if (lastIsFaceDetected != MainActivity.isFaceDetected) {
+            delaySpawnKill = 0
+        } else {
+            delaySpawnKill++
+
+            if (delaySpawnKill > (10 * (this.world.ants.size + 1)) && MainActivity.isFaceDetected) {
+                spawnAnt()
+                delaySpawnKill = 0
+            }
+
+            if (delaySpawnKill > 25 && !MainActivity.isFaceDetected) {
+                killRandomAnt()
+                delaySpawnKill = 0
+            }
+        }
+
+        lastIsFaceDetected = MainActivity.isFaceDetected
         world.update()
     }
 

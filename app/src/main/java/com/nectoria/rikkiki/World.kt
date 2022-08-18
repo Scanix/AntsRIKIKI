@@ -13,7 +13,7 @@ class World(w: Int, h: Int) {
     val grid: Array<Array<Obstacle>>
     val nest: Nest
     var adjPos: Array<Array<MutableList<Point>>>
-    private val ants: MutableList<Ant>
+    val ants: MutableList<Ant> = mutableListOf()
     val size: Point = Point(w, h)
 
     init {
@@ -24,7 +24,7 @@ class World(w: Int, h: Int) {
         this.addObstacles(Constants.OBSTACLE_COUNT)
         if (Constants.FOOD != 0) this.initFood(Constants.FOOD)
         this.adjPos = this.getAdjPositions()
-        this.ants = this.initAnts(Constants.ANTS)
+        //this.ants = this.initAnts(Constants.ANTS)
         //this.renderAllOnce(canvas)
     }
 

@@ -1,9 +1,6 @@
 package com.nectoria.rikkiki
 
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.Point
+import android.graphics.*
 import android.util.Log
 import java.util.*
 
@@ -187,12 +184,13 @@ class Ant : Obstacle {
 
         paint.strokeWidth = 3f
 
-        canvas.drawRect(
-            (this.position.x * this.size.x).toFloat(),
-            (this.position.y * this.size.y).toFloat(),
-            (this.position.x * this.size.x + this.size.x).toFloat(),
-            (this.position.y * this.size.y + this.size.y).toFloat(),
-            paint
+        canvas.drawOval(
+            RectF(
+                (this.position.x * this.size.x).toFloat(),
+                (this.position.y * this.size.y).toFloat(),
+                (this.position.x * this.size.x + this.size.x).toFloat(),
+                (this.position.y * this.size.y + this.size.y).toFloat(),
+            ), paint
         )
     }
 

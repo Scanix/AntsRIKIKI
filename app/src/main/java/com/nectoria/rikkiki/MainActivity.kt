@@ -47,6 +47,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var gameViewAnts: GameViewAnts
     private var camera: Camera? = null
+    private var isFaceDetected: DelayedBoolean = DelayedBoolean(false, 41)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -131,7 +132,12 @@ class MainActivity : AppCompatActivity() {
                                      */
                                     poseDetector.process(inputImage)
                                         .addOnSuccessListener { results ->
-                                            textView.text = results.allPoseLandmarks.size.toString()
+                                            isFaceDetected.setValue(results.allPoseLandmarks.size > 0)
+                                            val text =
+                                                "OnTime: " + (results.allPoseLandmarks.size > 0) + " Delayed: " + isFaceDetected.getValue()
+                                                    .toString()
+                                            textView.text = text
+                                            MainActivity.isFaceDetected = isFaceDetected.getValue()
                                             imageProxy.close()
                                         }
                                         .addOnFailureListener {
@@ -178,5 +184,9 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         cameraExecutor.shutdown()
+    }
+
+    companion object {
+        var isFaceDetected: Boolean = false
     }
 }
